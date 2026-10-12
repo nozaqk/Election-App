@@ -1,0 +1,40 @@
+:root {
+  --bg: #f6f4ee; --card: #ffffff; --ink: #14221c; --muted: #5d6b64; --line: #dcd8cb;
+  --green: #0b3d2e; --green-2: #15674d; --gold: #f2c94c; --red: #a62d2d; --amber: #8a5a00;
+  --radius: 14px; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #0d1713; --card: #15231c; --ink: #eef3ef; --muted: #9db0a6; --line: #284037; --green: #0b3d2e; --green-2: #2d9b76; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); line-height: 1.5; -webkit-text-size-adjust: 100%; }
+button, input { font: inherit; }
+.top { background: var(--green); color: #fff; padding: calc(12px + env(safe-area-inset-top)) 16px 12px; display: flex; align-items: center; justify-content: space-between; gap: 12px; position: sticky; top: 0; z-index: 5; }
+.top h1 { font-size: 1.05rem; margin: 0; letter-spacing: .01em; }
+.top button { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,.4); padding: 6px 12px; border-radius: 999px; }
+main { max-width: 640px; margin: 0 auto; padding: 16px 16px calc(32px + env(safe-area-inset-bottom)); }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; margin: 0 0 14px; }
+.card h2, .card h3 { margin: 0 0 6px; }
+.muted { color: var(--muted); font-size: .92rem; }
+.pill { display: inline-block; font-size: .75rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: 3px 10px; border-radius: 999px; background: #e7efe9; color: var(--green); }
+.pill.ACTIVE { background: #d8f3e4; color: #0a6b3d; } .pill.SCHEDULED { background: #fdf0c7; color: #7a5600; }
+.pill.PAUSED, .pill.DEACTIVATED { background: #f4dede; color: var(--red); } .pill.PUBLISHED { background: #dde8fb; color: #1d4ba0; }
+.btn { display: block; width: 100%; padding: 14px 16px; border-radius: 12px; border: 0; background: var(--green-2); color: #fff; font-weight: 700; cursor: pointer; text-align: center; }
+.btn.secondary { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+.field { display: block; margin: 0 0 12px; } .field span { display: block; font-size: .85rem; color: var(--muted); margin-bottom: 4px; }
+.field input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--card); color: var(--ink); }
+.err { background: #f9e5e5; color: var(--red); border: 1px solid #ebbcbc; padding: 10px 12px; border-radius: 10px; margin: 0 0 12px; }
+@media (prefers-color-scheme: dark) { .err { background: #3a1c1c; border-color: #6b2c2c; color: #ffb4b4; } }
+.notice { border-left: 4px solid var(--gold); padding: 10px 12px; background: rgba(242,201,76,.14); border-radius: 8px; margin: 0 0 12px; white-space: pre-line; }
+.countdown { font-variant-numeric: tabular-nums; font-size: 1.6rem; font-weight: 800; color: var(--green-2); }
+.cand { display: flex; gap: 12px; align-items: flex-start; padding: 12px; border: 1px solid var(--line); border-radius: 12px; margin: 0 0 8px; cursor: pointer; background: var(--card); }
+.cand.sel { border-color: var(--green-2); box-shadow: 0 0 0 2px var(--green-2) inset; }
+.cand img, .avatar { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; flex: none; background: #e7efe9; display: grid; place-items: center; font-weight: 800; color: var(--green); }
+.cand input { margin-top: 4px; accent-color: var(--green-2); }
+.num { font-size: .75rem; color: var(--muted); }
+details.m summary { cursor: pointer; color: var(--green-2); font-size: .88rem; margin-top: 4px; }
+.row { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+.bar { height: 8px; background: var(--line); border-radius: 99px; overflow: hidden; margin: 4px 0 10px; } .bar > i { display: block; height: 100%; background: var(--green-2); }
+.win { color: #0a6b3d; font-weight: 800; }
+.link { background: none; border: 0; color: var(--green-2); text-decoration: underline; padding: 0; cursor: pointer; }
