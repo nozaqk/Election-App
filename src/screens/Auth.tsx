@@ -70,10 +70,12 @@ export function Auth({ onDone }: { onDone: () => void }) {
           {mode === "register" && step === "details" && <p className="muted center"><button type="button" className="link" onClick={() => { setErr(null); setSentTo(null); setStep("verify"); }}>I already have a code</button></p>}
           {mode === "register" && step === "verify" && sentTo && <p className="muted center"><button type="button" className="link" onClick={() => { setErr(null); setStep("details"); }}>Resend code / change details</button></p>}
         </form>
-        <p className="muted center">
-          {mode === "login" ? <>New here? <button className="link" onClick={() => go("register")}>Create account</button> · <button className="link" onClick={() => go("recover")}>Forgot password?</button></>
-            : <button className="link" onClick={() => go("login")}>Back to sign in</button>}
-        </p>
+        <div className="auth-links muted">
+          {mode === "login" ? <>
+            <div>New here? <button className="link" onClick={() => go("register")}>Create account</button></div>
+            <div><button className="link" onClick={() => go("recover")}>Forgot password?</button></div>
+          </> : <div><button className="link" onClick={() => go("login")}>Back to sign in</button></div>}
+        </div>
       </main>
     </>
   );
