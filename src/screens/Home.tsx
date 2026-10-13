@@ -6,7 +6,7 @@ export function Home({ me, data, err, skew, onOpen, onAll }: { me: Me | null; da
   const top = data ? byImportance(data.elections)[0] : undefined;
   return (
     <>
-      {me && <p className="muted">Welcome, <b>{me.fullName}</b><br />{me.programme} · Level {me.level}{me.semester ? ` · Semester ${me.semester}` : ""}</p>}
+      {me && <p className="muted">Welcome, <b>{me.fullName}</b></p>}
       {err && <div className="err" role="alert">{err}</div>}
       {!data && !err && <p className="muted">Loading…</p>}
       {data?.empty && <div className="card"><h2>{data.empty.headline}</h2><p className="muted">{data.empty.body}</p></div>}
