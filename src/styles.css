@@ -38,3 +38,9 @@ details.m summary { cursor: pointer; color: var(--green-2); font-size: .88rem; m
 .bar { height: 8px; background: var(--line); border-radius: 99px; overflow: hidden; margin: 4px 0 10px; } .bar > i { display: block; height: 100%; background: var(--green-2); }
 .win { color: #0a6b3d; font-weight: 800; }
 .link { background: none; border: 0; color: var(--green-2); text-decoration: underline; padding: 0; cursor: pointer; }
+
+/* Sign-in / create-account: centred card */
+main.auth { min-height: calc(100vh - 56px); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.auth-card { width: 100%; max-width: 420px; padding: 24px 20px; box-shadow: 0 6px 24px rgba(0,0,0,.06); }
+.auth-card h2 { text-align: center; margin-bottom: 14px; }
+.center { text-align: center; }
