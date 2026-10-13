@@ -44,3 +44,4 @@ main.auth { min-height: calc(100vh - 56px); display: flex; flex-direction: colum
 .auth-card { width: 100%; max-width: 420px; padding: 24px 20px; box-shadow: 0 6px 24px rgba(0,0,0,.06); }
 .auth-card h2 { text-align: center; margin-bottom: 14px; }
 .center { text-align: center; }
+.auth-links { width: 100%; max-width: 420px; text-align: center; display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
