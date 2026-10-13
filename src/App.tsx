@@ -29,24 +29,23 @@ export default function App() {
   useEffect(() => { window.scrollTo(0, 0); }, [tab, electionId]);
 
   if (!signedIn) return <Auth onDone={() => setSignedIn(true)} />;
-  return <Shell me={me} tab={tab} setTab={setTab} electionId={electionId} setElectionId={setElectionId} onSignOut={signOut} />;
+  return <Shell me={me} setMe={setMe} tab={tab} setTab={setTab} electionId={electionId} setElectionId={setElectionId} onSignOut={signOut} />;
 }
 
-function Shell({ me, tab, setTab, electionId, setElectionId, onSignOut }: { me: Me | null; tab: Tab; setTab: (t: Tab) => void; electionId: string | null; setElectionId: (id: string | null) => void; onSignOut: () => void }) {
+function Shell({ me, setMe, tab, setTab, electionId, setElectionId, onSignOut }: { me: Me | null; setMe: (m: Me) => void; tab: Tab; setTab: (t: Tab) => void; electionId: string | null; setElectionId: (id: string | null) => void; onSignOut: () => void }) {
   const { data, err, skew } = useOverview();
   const inElection = electionId !== null;
   return (
     <>
       <header className="top">
         <h1>{inElection ? <button onClick={() => setElectionId(null)} aria-label="Back">← Back</button> : "Student Election"}</h1>
-        {me && <span style={{ fontSize: ".8rem", opacity: .85 }}>{me.indexNumber}</span>}
       </header>
       <main className={inElection ? "" : "has-tabs"}>
         {inElection ? <ElectionScreen id={electionId!} /> : <>
           {tab === "home" && <Home me={me} data={data} err={err} skew={skew} onOpen={setElectionId} onAll={() => setTab("elections")} />}
           {tab === "news" && <News data={data} err={err} onOpen={setElectionId} />}
           {tab === "elections" && <Elections data={data} err={err} skew={skew} onOpen={setElectionId} />}
-          {tab === "settings" && <Settings me={me} onSignOut={onSignOut} />}
+          {tab === "settings" && <Settings me={me} onSaved={setMe} onSignOut={onSignOut} />}
         </>}
       </main>
       {/* Hidden while an election is open so nobody leaves a half-finished ballot by accident; "Back" returns here. */}

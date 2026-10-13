@@ -44,4 +44,4 @@ export interface PositionResult {
   candidates: { candidateId: string; name: string; number: number; photoUrl: string | null; votes: number; winner: boolean; tied: boolean }[];
 }
 export interface Results { id: string; title: string; status: string; publishedLabel: string | null; turnout: number; results: PositionResult[] }
-export interface Me { indexNumber: string; fullName: string; department: string; programme: string; level: number }
+export interface Me { indexNumber: string; fullName: string; department: string; programme: string; level: number; semester: number | null; officialLevel: number }

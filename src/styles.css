@@ -57,3 +57,4 @@ h2.page { margin: 4px 0 12px; } h3.section { margin: 6px 0 8px; }
 .btn.danger { background: var(--red); color: #fff; }
 .kv { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; margin: 8px 0 10px; } .kv dt { color: var(--muted); } .kv dd { margin: 0; font-weight: 600; text-align: right; }
 .card.news h3 { margin: 6px 0 4px; }
+.field select { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--card); color: var(--ink); font: inherit; }
