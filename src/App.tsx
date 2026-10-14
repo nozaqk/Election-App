@@ -7,6 +7,7 @@ import { Elections } from "./screens/Elections";
 import { Settings } from "./screens/Settings";
 import { ElectionScreen } from "./screens/Election";
 import { useOverview } from "./useOverview";
+import { askBluetoothOn, BtState, hasNative, watchBluetooth } from "./native";
 
 type Tab = "home" | "news" | "elections" | "settings";
 const ICONS: Record<Tab, string> = {
@@ -16,6 +17,24 @@ const ICONS: Record<Tab, string> = {
   settings: "M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM19 12l2-1-2-4-2 .5-1.5-1L15 4h-4l-.5 2.5-1.5 1L6.5 7 4.5 11l2 1v2l-2 1 2 4 2-.5 1.5 1L11 20h4l.5-2.5 1.5-1 2 .5 2-4-2-1z",
 };
 const LABEL: Record<Tab, string> = { home: "Home", news: "News", elections: "Election", settings: "Settings" };
+
+/** Bluetooth status, app only. Red = phone Bluetooth off (tap to be asked to turn it on), yellow = Bluetooth on, green = polling-node signal in range. */
+const BT_TEXT = { off: "Bluetooth is off. Tap to turn it on.", on: "Bluetooth is on. No polling device in range.", node: "Connected: polling device in range." } as const;
+function BtBadge() {
+  const [st, setSt] = useState<BtState | null>(null);
+  useEffect(() => watchBluetooth(setSt), []);
+  if (st === null) return null;
+  return (
+    <button type="button" className={`bt ${st}`} onClick={() => { if (st === "off") askBluetoothOn(); }} aria-label={BT_TEXT[st]} title={BT_TEXT[st]}>
+      <svg viewBox="0 0 30 24" width="30" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+        <path d="M5 7l10 10-5 5V2l5 5L5 17" />
+        {st !== "off" && <path d="M20 8.5a5 5 0 0 1 0 7" />}
+        {st === "node" && <path d="M23.5 5.5a9 9 0 0 1 0 13" />}
+        {st === "off" && <path d="M19 8l7 8M26 8l-7 8" />}
+      </svg>
+    </button>
+  );
+}
 
 export default function App() {
   const [signedIn, setSignedIn] = useState(!!getToken());
@@ -39,6 +58,7 @@ function Shell({ me, setMe, tab, setTab, electionId, setElectionId, onSignOut }:
     <>
       <header className="top">
         <h1>{inElection ? <button onClick={() => setElectionId(null)} aria-label="Back">← Back</button> : "Student Election"}</h1>
+        {hasNative() && <BtBadge />}
       </header>
       <main className={inElection ? "" : "has-tabs"}>
         {inElection ? <ElectionScreen id={electionId!} /> : <>

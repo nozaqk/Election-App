@@ -64,9 +64,10 @@ h2.page { margin: 4px 0 12px; } h3.section { margin: 6px 0 8px; }
 .card-head h3{margin:0}
 .link-btn{background:none;border:1px solid var(--line,#ddd);border-radius:999px;padding:6px 16px;font:inherit;font-weight:600;color:inherit;cursor:pointer}
 
-.top button.bt { font-weight: 700; font-size: .8rem; letter-spacing: .04em; padding: 4px 12px; border: 2px solid #fff; color: #fff; }
-.top button.bt.on { background: #1fa855; }
+.top button.bt { display: inline-flex; align-items: center; padding: 4px 10px; border: 2px solid #fff; color: #fff; line-height: 0; }
 .top button.bt.off { background: #d93636; }
+.top button.bt.on { background: #f2b705; color: #3a2a00; }
+.top button.bt.node { background: #1fa855; }
 
 /* Keep the page steady: no rubber-band / stretch when dragging past the top or bottom. */
 html { -webkit-tap-highlight-color: transparent; }

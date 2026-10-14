@@ -11,6 +11,9 @@ export const hasNative = () => typeof window !== "undefined" && !!window.Electio
 type Pending = { resolve: (c: BeaconClaim[]) => void; reject: (e: NativeError) => void; timer: number };
 const pending = new Map<string, Pending>();
 let wired = false;
+export type BtState = "off" | "on" | "node";   // off = phone Bluetooth off, on = Bluetooth on, node = a polling-node signal is in range
+const btListeners = new Set<(s: BtState) => void>();
+let btState: BtState | null = null;
 
 export class NativeError extends Error { constructor(public code: string, message: string) { super(message); } }
 
@@ -18,8 +21,9 @@ function wire() {
   if (wired || !window.ElectionNative) return;
   wired = true;
   window.ElectionNative.onmessage = (e) => {
-    let m: { type: string; id: string; claims?: BeaconClaim[]; code?: string; message?: string };
+    let m: { type: string; id: string; claims?: BeaconClaim[]; code?: string; message?: string; on?: boolean; node?: boolean };
     try { m = JSON.parse(e.data); } catch { return; }
+    if (m.type === "bluetooth") { btState = !m.on ? "off" : m.node ? "node" : "on"; btListeners.forEach((f) => f(btState!)); return; }
     const p = pending.get(m.id);
     if (!p) return;
     clearTimeout(p.timer); pending.delete(m.id);
@@ -41,3 +45,15 @@ export function scanForNode(timeoutMs = 15000): Promise<BeaconClaim[]> {
 }
 
 export const openAppSettings = () => window.ElectionNative?.postMessage(JSON.stringify({ type: "openSettings" }));
+
+/** Follow the phone's Bluetooth state (app only). Calls back now if known, then on every change; returns an unsubscribe. */
+export function watchBluetooth(cb: (s: BtState) => void): () => void {
+  if (!window.ElectionNative) return () => undefined;
+  wire();
+  btListeners.add(cb);
+  if (btState !== null) cb(btState);
+  window.ElectionNative.postMessage(JSON.stringify({ type: "btStatus" }));
+  return () => { btListeners.delete(cb); };
+}
+/** Ask the app to show the system "turn on Bluetooth" prompt again. */
+export const askBluetoothOn = () => window.ElectionNative?.postMessage(JSON.stringify({ type: "btEnable" }));
