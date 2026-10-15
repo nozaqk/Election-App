@@ -57,3 +57,8 @@ export function watchBluetooth(cb: (s: BtState) => void): () => void {
 }
 /** Ask the app to show the system "turn on Bluetooth" prompt again. */
 export const askBluetoothOn = () => window.ElectionNative?.postMessage(JSON.stringify({ type: "btEnable" }));
+
+/** Phone notifications: hand the app a limited token (it can only read the notification feed) so it can check in the background. */
+export const startNotifications = (token: string, apiBase: string) =>
+  window.ElectionNative?.postMessage(JSON.stringify({ type: "notifyStart", token, apiBase }));
+export const stopNotifications = () => window.ElectionNative?.postMessage(JSON.stringify({ type: "notifyStop" }));

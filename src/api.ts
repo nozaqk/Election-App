@@ -1,4 +1,4 @@
-const BASE: string = (import.meta.env.VITE_API_URL ?? "").replace(/\/$/, "");
+export const BASE: string = (import.meta.env.VITE_API_URL ?? "").replace(/\/$/, "");
 const KEY = "election.session";
 
 export interface Session { token: string; exp: number }

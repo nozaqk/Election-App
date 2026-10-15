@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { api, getToken, Me, setToken } from "./api";
+import { api, BASE, getToken, Me, setToken } from "./api";
 import { Auth } from "./screens/Auth";
 import { Home } from "./screens/Home";
 import { News } from "./screens/News";
@@ -7,7 +7,7 @@ import { Elections } from "./screens/Elections";
 import { Settings } from "./screens/Settings";
 import { ElectionScreen } from "./screens/Election";
 import { useOverview } from "./useOverview";
-import { askBluetoothOn, BtState, hasNative, watchBluetooth } from "./native";
+import { askBluetoothOn, BtState, hasNative, startNotifications, stopNotifications, watchBluetooth } from "./native";
 
 type Tab = "home" | "news" | "elections" | "settings";
 const ICONS: Record<Tab, string> = {
@@ -42,9 +42,13 @@ export default function App() {
   const [tab, setTab] = useState<Tab>("home");
   const [electionId, setElectionId] = useState<string | null>(null);
 
-  const signOut = useCallback(() => { setToken(null); setSignedIn(false); setMe(null); setElectionId(null); setTab("home"); }, []);
-  useEffect(() => { const f = () => setSignedIn(false); window.addEventListener("election:signed-out", f); return () => window.removeEventListener("election:signed-out", f); }, []);
+  const signOut = useCallback(() => { stopNotifications(); setToken(null); setSignedIn(false); setMe(null); setElectionId(null); setTab("home"); }, []);
+  useEffect(() => { const f = () => { stopNotifications(); setSignedIn(false); }; window.addEventListener("election:signed-out", f); return () => window.removeEventListener("election:signed-out", f); }, []);
   useEffect(() => { if (signedIn) api<Me>("/auth/student/me").then(setMe).catch(() => undefined); }, [signedIn]);
+  useEffect(() => {
+    if (!signedIn || !hasNative()) return;
+    api<{ token: string }>("/student/notify-token", { method: "POST" }).then((r) => startNotifications(r.token, BASE || location.origin)).catch(() => undefined);
+  }, [signedIn]);
   useEffect(() => { window.scrollTo(0, 0); }, [tab, electionId]);
 
   if (!signedIn) return <Auth onDone={() => setSignedIn(true)} />;
