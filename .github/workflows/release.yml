@@ -69,9 +69,10 @@ jobs:
       - name: Publish GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.ref_type == 'tag' && github.ref_name || format('v1.0.0-{0}', github.run_number) }}
-          name: Student Election v1.0.0 (build ${{ github.run_number }})
-          generate_release_notes: true
+          tag_name: ${{ github.ref_type == 'tag' && github.ref_name || 'latest' }}
+          name: Student Election v1.0.0 (Latest)
+          make_latest: true
+          generate_release_notes: false
           files: build/app/outputs/flutter-apk/app-release.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
