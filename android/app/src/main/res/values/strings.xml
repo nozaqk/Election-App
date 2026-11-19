@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Student Election</string>
+    <string name="notif_channel_elections">Election updates</string>
+    <string name="notif_channel_elections_desc">Voting opens, results and announcements</string>
+</resources>

@@ -1,0 +1,49 @@
+pluginManagement {
+    def flutterSdkPath = {
+        def envValue = System.getenv("FLUTTER_ROOT")
+        if (envValue != null) return envValue
+
+        def localProperties = new File(settingsDir, "local.properties")
+        if (localProperties.exists()) {
+            def properties = new java.util.Properties()
+            localProperties.withReader("UTF-8") { reader ->
+                properties.load(reader)
+            }
+            def flutterSdkPath = properties.getProperty("flutter.sdk")
+            assert flutterSdkPath != null, "flutter.sdk not set in local.properties"
+            return flutterSdkPath
+        }
+        throw new GradleException("Flutter SDK not found. Define location with an env var or in a local.properties file.")
+    }()
+
+    settingsDir.resolve("local.properties").withReader("UTF-8") { reader ->
+        def properties = new java.util.Properties()
+        properties.load(reader)
+
+        def flutterRoot = properties.getProperty("flutter.sdk")
+        assert flutterRoot != null, "flutter.sdk not set in local.properties"
+    }
+
+    includeBuild("$flutterSdkPath/packages/flutter_tools/gradle")
+
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+plugins {
+    id "dev.flutter.flutter-gradle-plugin" version "1.0.0" apply false
+}
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.name = "student_election"
+include ":app"
