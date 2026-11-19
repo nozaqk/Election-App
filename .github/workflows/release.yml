@@ -36,7 +36,23 @@ jobs:
         run: flutter pub get
 
       - name: Analyze Dart code
-        run: flutter analyze --no-fatal-infos --no-fatal-warnings
+        run: flutter analyze --no-fatal-infos --no-fatal-warnings 2>&1 | tee analyze.log
+
+      - name: Report analyze failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            if (fs.existsSync('analyze.log')) {
+              const log = fs.readFileSync('analyze.log', 'utf8').slice(-6000);
+              await github.rest.repos.createCommitComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                commit_sha: context.sha,
+                body: '```\n' + log + '\n```'
+              });
+            }
 
       - name: Build release APK
         run: flutter build apk --release
