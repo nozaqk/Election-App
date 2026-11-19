@@ -1,0 +1,10 @@
+<resources>
+    <!-- Theme applied to the Android Window while the Flutter engine warms up -->
+    <style name="LaunchTheme" parent="@android:style/Theme.Light.NoTitleBar">
+        <item name="android:windowBackground">@drawable/launch_background</item>
+    </style>
+    <!-- Theme applied once Flutter renders (Material) -->
+    <style name="NormalTheme" parent="@android:style/Theme.Light.NoTitleBar">
+        <item name="android:windowBackground">?android:colorBackground</item>
+    </style>
+</resources>

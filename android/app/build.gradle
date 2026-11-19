@@ -1,0 +1,42 @@
+plugins {
+    id "com.android.application"
+    id "org.jetbrains.kotlin.android"
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+android {
+    namespace = "com.studentelection.vote"
+    compileSdk = flutter.compileSdkVersion
+    ndkVersion = flutter.ndkVersion
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+
+    defaultConfig {
+        applicationId = "com.studentelection.vote"
+        // TODO: update these version values together with pubspec.yaml.
+        minSdk = flutter.minSdkVersion
+        targetSdk = flutter.targetSdkVersion
+        versionCode = flutter.versionCode
+        versionName = flutter.versionName
+    }
+
+    buildTypes {
+        release {
+            // Debug signing for now. Before public distribution, create a
+            // keystore, add it to CI secrets, and switch to:
+            //   signingConfig = signingConfigs.create("release") { ... }
+            signingConfig = signingConfigs.debug
+        }
+    }
+}
+
+flutter {
+    source = "../lib"
+}
