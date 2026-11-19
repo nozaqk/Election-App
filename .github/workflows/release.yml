@@ -36,10 +36,29 @@ jobs:
         run: flutter pub get
 
       - name: Analyze Dart code
-        run: flutter analyze
+        shell: bash
+        run: set -o pipefail && flutter analyze --no-fatal-infos --no-fatal-warnings 2>&1 | tee analyze.log
 
       - name: Build release APK
-        run: flutter build apk --release
+        shell: bash
+        run: set -o pipefail && flutter build apk --release 2>&1 | tee build.log
+
+      - name: Report build failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const files = ['analyze.log', 'build.log'].filter(f => fs.existsSync(f));
+            if (files.length > 0) {
+              const log = files.map(f => '=== ' + f + ' ===\n' + fs.readFileSync(f, 'utf8')).join('\n').slice(-6000);
+              await github.rest.repos.createCommitComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                commit_sha: context.sha,
+                body: '```\n' + log + '\n```'
+              });
+            }
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4

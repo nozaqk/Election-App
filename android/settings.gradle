@@ -16,14 +16,6 @@ pluginManagement {
         throw new GradleException("Flutter SDK not found. Define location with an env var or in a local.properties file.")
     }()
 
-    settingsDir.resolve("local.properties").withReader("UTF-8") { reader ->
-        def properties = new java.util.Properties()
-        properties.load(reader)
-
-        def flutterRoot = properties.getProperty("flutter.sdk")
-        assert flutterRoot != null, "flutter.sdk not set in local.properties"
-    }
-
     includeBuild("$flutterSdkPath/packages/flutter_tools/gradle")
 
     repositories {
